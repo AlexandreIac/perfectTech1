@@ -156,18 +156,17 @@ PAM_EXTERN int pam_sm_chauhtok(pam_handle_t * pamh, int flags, int argc, const c
   int ret;
   char *user;
   char *password;
+  char *oldpassword;
 
-	if ((ret = pam_get_item(pamh, PAM_AUTHTOK, (const void **)&password)) != PAM_SUCCESS)
-		return (ret);
-	if ((password == NULL) || ((ret = pam_get_user(pamh, (const char **)&user, "Username: ")) != PAM_SUCCESS))
+  if ((ret = pam_get_item(pamh, PAM_AUTHTOK, (const void **)&password)) != PAM_SUCCESS)
+    return (ret);
+  if ((ret = pam_get_item(pamh, PAM_OLDAUTHTOK, (const void **)&oldpassword)) != PAM_SUCCESS)
+    return (ret);
+  if ((password == NULL) || ((ret = pam_get_user(pamh, (const char **)&user, "Username: ")) != PAM_SUCCESS))
     return (ret);
 
 
-  //
-  //                      ! ! !
-  //
-  // add a key to a container with cryptSetUp luksAddKey
-  //
+  changePassword(oldpassword, password, user);
 
   return (PAM_SUCCESS);
 }
