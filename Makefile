@@ -5,20 +5,20 @@
 ## Login   <alexandre.iacona@epitech.eu>
 ## 
 ## Started on  Wed Nov 22 09:16:37 2017 alex
-## Last update Wed Nov 22 09:25:39 2017 alex
+## Last update Wed Nov 22 10:00:09 2017 alex
 ##
 
-NAME	= pam_module.so
+NAME	= pam_modules.so
 
 GCC	= gcc
 
-CFLAGS	= -W -Wall -ansi -pedantic -fPIC
+CFLAGS	= -fPIC
 
 LDFLAGS	= -lpam
 
 SRC	= pam_modules.c
 
-OBJS	= $(SRC:.c=.o)c
+OBJS	= $(SRC:.c=.o)
 
 %.o: %.c
 	$(GCC) -c -o $@ $< $(CFLAGS)
@@ -27,3 +27,17 @@ all : $(NAME)
 
 $(NAME): $(OBJS)
 	$(GCC) -shared -o $@ $(OBJS) $(LDFLAGS)
+
+clean:
+	rm -f $(OBJS)
+
+fclean: clean
+	rm -f $(NAME)
+
+re: all clean
+
+install: re
+	sudo rm -f /etc/pam.d/lib/security/pam_modules.so
+	sudo mv ./pam_modules.so /etc/pam.d/lib/security/
+
+.PHONY: all clean fclean re
