@@ -22,7 +22,8 @@ void  cleanup(pam_handle_t *pamh, void *src, int err)
   free(src);
 }
 
-PAM_EXTERN int pam_sm_authenticate( pam_handle_t *pamh, int flags,int argc, const char **argv ) {
+PAM_EXTERN int pam_sm_authenticate(pam_handle_t *pamh, int flags,int argc, const char **argv )
+{
   int ret;
   const char *user;
   char *password;

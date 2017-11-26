@@ -5,14 +5,14 @@
 ## Login   <alexandre.iacona@epitech.eu>
 ## 
 ## Started on  Wed Nov 22 09:16:37 2017 alex
-## Last update Sun Nov 26 12:14:48 2017 adrien
+## Last update Sun Nov 26 14:46:54 2017 adrien
 ##
 
 NAME	= my_pam.so
 
 GCC	= gcc
 
-CFLAGS	= -fPIC -c
+CFLAGS	= -fPIC -c -Wall -Werror
 
 LDFLAGS = -shared
 
