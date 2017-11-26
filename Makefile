@@ -5,7 +5,7 @@
 ## Login   <alexandre.iacona@epitech.eu>
 ## 
 ## Started on  Wed Nov 22 09:16:37 2017 alex
-## Last update Sun Nov 26 15:02:06 2017 adrien
+## Last update Sun Nov 26 18:01:23 2017 alex
 ##
 
 NAME	= mypam.so
@@ -13,8 +13,6 @@ NAME	= mypam.so
 GCC	= gcc
 
 CFLAGS	= -fPIC -c -Wall -Werror
-
-LDFLAGS = -shared
 
 LD	= ld
 
@@ -28,7 +26,7 @@ OBJS	= $(SRC:.c=.o)
 all : $(NAME)
 
 $(NAME): $(OBJS)
-	$(LD) -o $@ $(OBJS) $(LDFLAGS)
+	$(LD) --shared -o $@ $(OBJS)
 
 clean:
 	rm -f $(OBJS)

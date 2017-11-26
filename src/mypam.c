@@ -151,23 +151,28 @@ PAM_EXTERN int pam_sm_close_session(pam_handle_t * pamh, int flags, int argc, co
   return (PAM_SUCCESS);
 }
 
-PAM_EXTERN int pam_sm_chauhtok(pam_handle_t * pamh, int flags, int argc, const char **argv)
+PAM_EXTERN int pam_sm_chauthtok(pam_handle_t * pamh, int flags, int argc, const char **argv)
 {
   int ret;
   char *user;
   char *password;
   char *oldpassword;
 
+  printf("Change password 1\n");
   if ((ret = pam_get_item(pamh, PAM_AUTHTOK, (const void **)&password)) != PAM_SUCCESS)
     return (ret);
+  printf("Change password 2\n");
   if ((ret = pam_get_item(pamh, PAM_OLDAUTHTOK, (const void **)&oldpassword)) != PAM_SUCCESS)
     return (ret);
-  if ((password == NULL) || ((ret = pam_get_user(pamh, (const char **)&user, "Username: ")) != PAM_SUCCESS))
+  printf("Change password 3\n");
+  if ((password == NULL) || (oldpassword == NULL) || ((ret = pam_get_user(pamh, (const char **)&user, "Username: ")) != PAM_SUCCESS))
     return (ret);
 
-
+  printf("Old password is %s, new is %s, user is %s\n", oldpassword, password, user); 
   changePassword(oldpassword, password, user);
 
+  pam_set_data(pamh, "password_storage", strdup(password), &cleanup);
+  
   return (PAM_SUCCESS);
 }
 
