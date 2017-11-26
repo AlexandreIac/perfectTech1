@@ -5,7 +5,7 @@
 ## Login   <alexandre.iacona@epitech.eu>
 ## 
 ## Started on  Wed Nov 22 09:16:37 2017 alex
-## Last update Sun Nov 26 18:01:23 2017 alex
+## Last update Sun Nov 26 18:20:08 2017 alex
 ##
 
 NAME	= mypam.so
@@ -16,7 +16,8 @@ CFLAGS	= -fPIC -c -Wall -Werror
 
 LD	= ld
 
-SRC	= src/mypam.c
+SRC	= src/mypam.c \
+	  src/luksFunction.c
 
 OBJS	= $(SRC:.c=.o)
 

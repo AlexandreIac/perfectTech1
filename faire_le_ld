@@ -1,1 +1,0 @@
-ld -x --shared -o mypam.so mypam.o
