@@ -18,7 +18,8 @@ LDFLAGS = -shared
 
 LD	= ld
 
-SRC	= src/mypam.c
+SRC	= src/mypam.c \
+	src/luksFunction.c
 
 OBJS	= $(SRC:.c=.o)
 
