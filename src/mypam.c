@@ -19,7 +19,7 @@ void		changePassword(const char *pass, const char *newPass,
   free(buffer);
 }
 
-void		createContainer(const char *user, const char *pass)
+int		createContainer(const char *user, const char *pass)
 {
   char *buffer = NULL;
   char *path = NULL;
@@ -27,7 +27,7 @@ void		createContainer(const char *user, const char *pass)
   // look if the container already exist
   asprintf(&path, "/home/%s/.container", user);
   if (access(path, F_OK) != -1)
-    return;
+    return (1);
   // if not, create it
   asprintf(&buffer, "dd if=/dev/zero bs=1M count=10 of=%s; chown %s %s ;chmod u+rw,g-rwx,o-rwx %s", path, user, path, path);
   system(buffer);
@@ -36,17 +36,26 @@ void		createContainer(const char *user, const char *pass)
   system(buffer);
   free(buffer);
   free(path);
+  return (0);
 }
 
-void		openContainer(const char *user, const char *pass)
+void		openContainer(const char *user, const char *pass, const int isCreate)
 {
   // open the cipher container
   char *buffer = NULL;
-  
-  asprintf(&buffer, "echo '%s' | sudo cryptsetup luksOpen /home/%s/.container %s-data", pass, user, user);
+  char *path = NULL;
+
+  asprintf(&path, "/home/%s/.container", user);
+  asprintf(&buffer, "echo \"%s\" | sudo cryptsetup luksOpen %s %s-data", pass, path, user);
   system(buffer);
   free(buffer);
-  asprintf(&buffer, "sudo mkdir /home/%s/secure_data-rw.; sudo mount /dev/mapper/%s-data /home/%s/secure_data-rw; chown %s /home/%s/secure_data-rw; chmod u+rw,g-rwx,o-rwx /home/%s/secure_data-rw", user, user, user, user, user, user);
+  if (isCreate == 1)
+    {
+      asprintf(&buffer, "sudo mkfs.ext4 /dev/mapper/%s-data", user);
+      system(buffer);
+      free(buffer);
+    }
+  asprintf(&buffer, "mkdir /home/%s/secure_data-rw; sudo mount /dev/mapper/%s-data /home/%s/secure_data-rw; sudo chown -R %s /home/%s/secure_data-rw; sudo chmod u+rw,g-rwx,o-rwx /home/%s/secure_data-rw", user, user, user, user, user, user);
   system(buffer);
   free(buffer);
 }
@@ -85,7 +94,6 @@ PAM_EXTERN int pam_sm_authenticate(pam_handle_t *pamh, int flags,int argc, const
   const char *user;
   char *password;
 
-  printf("################ GNA GNA ###############\n");
   if ((ret = pam_get_user(pamh, &user, "Username: ")) != PAM_SUCCESS)
     return (ret);
 
@@ -96,7 +104,6 @@ PAM_EXTERN int pam_sm_authenticate(pam_handle_t *pamh, int flags,int argc, const
 
   pam_set_data(pamh, "password_storage", strdup(password), &cleanup);
 
-  printf("################ GNA GNA ###############\n");
   return (PAM_SUCCESS);
 }
 
@@ -105,8 +112,8 @@ PAM_EXTERN int pam_sm_open_session(pam_handle_t * pamh, int flags, int argc, con
   const char *user;
   char *password;
   int ret;
+  int isCreate = 0;
 
-  printf("################ GNA GNA ###############\n");
   if ((ret = pam_get_user(pamh, &user, "Username: ")) != PAM_SUCCESS)
     return (ret);
 
@@ -118,10 +125,9 @@ PAM_EXTERN int pam_sm_open_session(pam_handle_t * pamh, int flags, int argc, con
   if (password == NULL)
     return (ret);
 
-  createContainer(user, password);
-  openContainer(user, password);
+  isCreate = createContainer(user, password);
+  openContainer(user, password, isCreate);
 
-  printf("################ GNA GNA ###############\n");
   return (PAM_SUCCESS);
 }
 
