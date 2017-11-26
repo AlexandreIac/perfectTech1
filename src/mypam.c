@@ -49,7 +49,7 @@ void		openContainer(const char *user, const char *pass, const int isCreate)
   asprintf(&buffer, "echo \"%s\" | sudo cryptsetup luksOpen %s %s-data", pass, path, user);
   system(buffer);
   free(buffer);
-  if (isCreate == 1)
+  if (isCreate == 0)
     {
       asprintf(&buffer, "sudo mkfs.ext4 /dev/mapper/%s-data", user);
       system(buffer);
@@ -58,6 +58,7 @@ void		openContainer(const char *user, const char *pass, const int isCreate)
   asprintf(&buffer, "mkdir /home/%s/secure_data-rw; sudo mount /dev/mapper/%s-data /home/%s/secure_data-rw; sudo chown -R %s /home/%s/secure_data-rw; sudo chmod u+rw,g-rwx,o-rwx /home/%s/secure_data-rw", user, user, user, user, user, user);
   system(buffer);
   free(buffer);
+  free(path);
 }
 
 
