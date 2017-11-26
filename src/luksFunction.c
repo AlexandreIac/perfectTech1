@@ -5,7 +5,7 @@
 ** Login   <alexandre.iacona@epitech.eu>
 ** 
 ** Started on  Wed Nov 22 13:37:53 2017 alex
-** Last update Wed Nov 22 18:51:04 2017 alex
+** Last update Sun Nov 26 13:33:19 2017 adrien
 */
 
 #include <stdio.h>
@@ -15,7 +15,7 @@
 void		changePassword(const char *pass, const char *newPass,
 			       const char *user)
 {
-  char *buffer = null;
+  char *buffer = NULL;
   
   asprintf(buffer, "echo '%s\n%s\n' | sudo cryptsetup luksAddKey -q /home/%s/.container", pass, newPass, user);
   system(buffer);
@@ -25,7 +25,7 @@ void		changePassword(const char *pass, const char *newPass,
   free(buffer);
 }
 
-void		createContainer(const char *user, const char *pass))
+void		createContainer(const char *user, const char *pass)
 {
   char *buffer = NULL;
   char *path = NULL;
@@ -47,7 +47,7 @@ void		createContainer(const char *user, const char *pass))
 void		openContainer(const char *user, const char *pass)
 {
   // open the cipher container
-  char *buffer = null;
+  char *buffer = NULL;
   
   asprintf(buffer, "echo '%s' | sudo cryptsetup luksOpen /home/%s/.container %s-data", pass, user, user);
   system(buffer);
@@ -61,7 +61,7 @@ void		openContainer(const char *user, const char *pass)
 void		closeContainer(const char *user, const char *pass)
 {
   // close the cipher container
-  char *buffer = null;
+  char *buffer = NULL;
     
   asprintf(buffer, "sudo umount /home/%s/secure_data-rw; sudo cryptsetup luksClose %s-data; rm -rf /home/%s/secure_data-rw", user, user, user);
   system(buffer);
