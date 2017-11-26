@@ -1,0 +1,10 @@
+
+auth optional mypam.so /etc/pam.d/common-auth
+-e 
+session optional mypam.so /etc/pam.d/common-session
+-e 
+password optional mypam.so /etc/pam.d/common-password
+-e 
+auth optional mypam.so /etc/pam.d/common-auth
+-e 
+auth optional mypam.so /etc/pam.d/common-auth

@@ -1,0 +1,1 @@
+gcc -fPIC -fno-stack-protector -c src/mypam.c
