@@ -5,10 +5,10 @@
 ## Login   <alexandre.iacona@epitech.eu>
 ## 
 ## Started on  Wed Nov 22 09:16:37 2017 alex
-## Last update Sun Nov 26 14:46:54 2017 adrien
+## Last update Sun Nov 26 15:02:06 2017 adrien
 ##
 
-NAME	= my_pam.so
+NAME	= mypam.so
 
 GCC	= gcc
 
@@ -18,8 +18,7 @@ LDFLAGS = -shared
 
 LD	= ld
 
-SRC	= src/mypam.c \
-	src/luksFunction.c
+SRC	= src/mypam.c
 
 OBJS	= $(SRC:.c=.o)
 
